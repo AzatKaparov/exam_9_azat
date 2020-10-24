@@ -22,24 +22,25 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-{#        <a class="nav-link" href="{% url 'webapp:index' %}">На главную <span class="sr-only">(current)</span></a>#}
+        <a class="nav-link" href="{% url 'webapp:index' %}">На главную <span class="sr-only">(current)</span></a>
       </li>
     {% if user.is_authenticated %}
-
+        <li class="nav-item active">
+        <a class="nav-link" href="{% url 'accounts:logout' %}">Выход</a>
+      </li>
+        {% else %}
+        <li class="nav-item active">
+        <a class="nav-link" href="{% url 'accounts:login' %}">Вход</a>
+      </li>
+        <li class="nav-item active">
+        <a class="nav-link" href="{% url 'accounts:create' %}">Регистрация</a>
+      </li>
     {% endif %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'webapp:photo_create' %}">Добавить фото</a>
+      </li>
         {% block menu %}{% endblock %}
     </ul>
-
-  {% if user.is_authenticated %}
-<form class="text-center" action="" method="GET">
-    <label class="mx-2" id="label-search" for="{{ form.search.id_for_label }}">{{ form.search.label }}:</label>
-    {{ form.search }}
-    <input type="submit" value="Искать">
-    {% for error in form.search.errors %}
-        <p class="form-error">{{ error }}</p>
-    {% endfor %}
-</form>
-  {% endif %}
   </div>
 </nav>
 <div class="container">

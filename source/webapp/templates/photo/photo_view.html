@@ -1,15 +1,20 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block menu %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'webapp:photo_delete' photo.pk %}">Удалить</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'webapp:photo_update' photo.pk %}">Обновить</a>
+    </li>
+{% endblock %}
 
 {% block content %}
-    <div class="row">
-        {% for photo in photos %}
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-            <div class="card my-4" style="width: 18rem">
-            {% if photo.img %}
-                <img src="{{ photo.img.url }}" width="250" height="250" alt="picture">
-            {% endif %}
+    {% if photo.img %}
+        <img class="photo mt-5" src="{{ photo.img.url }}" alt="picture">
+    {% endif %}
+    <div class="card my-4" style="width: 18rem">
                 <div class="card-body">
                     <h5 class="card-title"><a href="{% url 'accounts:detail' photo.author.pk %}">{{ photo.author }}</a></h5>
                     <h6>Подпись: <i>{{ photo.sign }}</i></h6>
@@ -25,7 +30,14 @@
                 {% endif %}
                 </div>
             </div>
+    {% if photo.favorites.all %}
+    <div class="jumbotron jumbotron-fluid">
+    <h4 class="ml-4">Этим пользователям понравилось:</h4>
+        <div class="container">
+            {% for i in photo.favorites.all %}
+        <p class="user-list">- <a href="{% url 'accounts:detail' i.pk %}">{{ i }}</a></p>
+    {% endfor %}
         </div>
-        {% endfor %}
     </div>
+    {% endif %}
 {% endblock %}

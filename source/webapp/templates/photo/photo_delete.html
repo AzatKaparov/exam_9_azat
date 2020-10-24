@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
 
+{% block title %}Delete{% endblock %}
+
+{% block menu %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'webapp:photo_view' photo.pk %}">Отмена</a>
+    </li>
+{% endblock %}
 
 {% block content %}
-    <div class="row">
-        {% for photo in photos %}
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-            <div class="card my-4" style="width: 18rem">
+    <h1>Вы уверены, что хотите удалить эту картинку?</h1>
+    <form class="delete_form" action="{% url "webapp:photo_delete" photo.pk %}" method="post">
+        {% csrf_token %}
+            <p><input class="btn btn-primary mx-2" type="submit" value="Да"><a class="btn btn-secondary" href="{% url 'webapp:photo_view' photo.pk %}">Отмена</a></p>
+    </form>
+    <div class="card my-4" style="width: 18rem">
             {% if photo.img %}
-                <img src="{{ photo.img.url }}" width="250" height="250" alt="picture">
+                <img class="photo" src="{{ photo.img.url }}" width="250" height="250" alt="picture">
             {% endif %}
                 <div class="card-body">
                     <h5 class="card-title"><a href="{% url 'accounts:detail' photo.author.pk %}">{{ photo.author }}</a></h5>
@@ -25,7 +33,4 @@
                 {% endif %}
                 </div>
             </div>
-        </div>
-        {% endfor %}
-    </div>
 {% endblock %}

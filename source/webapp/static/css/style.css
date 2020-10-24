@@ -1,0 +1,23 @@
+.box {
+    border: solid black 2px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.photo {
+    height: auto;
+    width: 500px;
+    margin: 0 auto;
+}
+
+.sign {
+    white-space: pre-line;
+}
+
+.delete_form {
+    font-size: 20px;
+}
+
+.user-list {
+    font-size: 20px;
+}
