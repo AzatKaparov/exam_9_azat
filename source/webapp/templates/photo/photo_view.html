@@ -27,6 +27,8 @@
                     {% if perms.webapp.change_task %}
                     <a href="{% url 'webapp:photo_update' photo.pk %}">Обновить</a>
                         {% endif %}
+                    <a class="add_fav" href="{% url 'API:fav_ad' photo.pk %}">Добавить в избранное</a><br/>
+                    <a class="remove_fav" href="{% url 'API:fav_re' photo.pk %}">Удалить из избранного</a>
                 {% endif %}
                 </div>
             </div>
@@ -40,4 +42,5 @@
         </div>
     </div>
     {% endif %}
+    <script type="application/javascript" src="{% static 'js/main.js' %}"></script>
 {% endblock %}

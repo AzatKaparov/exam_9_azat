@@ -1,13 +1,11 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import get_token_view
+from .views import get_token_view, FavoriteAddView, FavoriteRemoveView
 
 
 app_name = 'API'
 
-router = DefaultRouter()
-
 urlpatterns = [
     path('get-token/', get_token_view, name='get_token'),
-    path('', include(router.urls)),
+    path('photo/<int:pk>/add', FavoriteAddView.as_view(), name='fav_ad'),
+    path('photo/<int:pk>/remove', FavoriteRemoveView.as_view(), name='fav_re')
 ]

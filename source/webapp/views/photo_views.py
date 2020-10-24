@@ -13,7 +13,7 @@ class PhotoIndexView(ListView):
     ordering = ['-date']
 
 
-class PhotoDetailView(DetailView):
+class PhotoDetailView(LoginRequiredMixin, DetailView):
     template_name = 'photo/photo_view.html'
     model = Photo
     context_object_name = 'photo'
@@ -35,10 +35,15 @@ class PhotoCreateView(LoginRequiredMixin, CreateView):
         return reverse('webapp:photo_view', kwargs={'pk': self.object.pk})
 
 
-class PhotoDeleteView(DeleteView):
+class PhotoDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'photo/photo_delete.html'
     model = Photo
     success_url = reverse_lazy('webapp:index')
+    permission_required = 'webapp.delete_photo'
+
+    def has_permission(self):
+        photo = self.get_object()
+        return super().has_permission() or photo.author == self.request.user
 
 
 class PhotoUpdateView(PermissionRequiredMixin, UpdateView):

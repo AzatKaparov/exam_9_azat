@@ -1,11 +1,14 @@
 import json
 
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.base import View
+from rest_framework.views import APIView
 
-from API.serializers import PhotoSerializer
+from webapp.models import Photo
 
 
 @ensure_csrf_cookie
@@ -15,21 +18,25 @@ def get_token_view(request, *args, **kwargs):
     return HttpResponseNotAllowed('Only GET request are allowed')
 
 
-class FavoriteAddView(View):
+class FavoriteAddView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def post(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-        slr = PhotoSerializer(data=data)
-        if slr.is_valid():
-            slr.favorites += data['favorites']
-            slr.save()
-            return JsonResponse(slr.data, safe=False)
+        photo = get_object_or_404(Photo, pk=kwargs['pk'])
+        if request.user not in photo.favorites.all():
+            photo.favorites.add(request.user)
+            return HttpResponse('Работает')
         else:
-            response = JsonResponse(slr.errors, safe=False)
-            response.status_code = 400
-            return response
+            return HttpResponse(status=400)
 
 
-
-
+class FavoriteRemoveView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def post(self, request, *args, **kwargs):
+        photo = get_object_or_404(Photo, pk=kwargs['pk'])
+        if request.user in photo.favorites.all():
+            photo.favorites.remove(request.user)
+            return HttpResponse('Работает')
+        else:
+            return HttpResponse(status=400)
 
 
