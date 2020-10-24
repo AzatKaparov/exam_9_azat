@@ -13,7 +13,7 @@ class PhotoIndexView(ListView):
     ordering = ['-date']
 
 
-class PhotoDetailView(LoginRequiredMixin, DetailView):
+class PhotoDetailView(DetailView):
     template_name = 'photo/photo_view.html'
     model = Photo
     context_object_name = 'photo'
