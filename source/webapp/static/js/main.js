@@ -12,6 +12,7 @@ async function addFavorite(event) {
         note.innerHTML = `<h6 style="color: #155724">Вы добавили фото в избранное.</h6>`
         note.classList.add('mx-4', 'mx-4', 'px-3', 'py-2', 'note_success')
         setTimeout(() => note.remove(), 3000);
+
     }
     catch (error) {
         console.log(error);
