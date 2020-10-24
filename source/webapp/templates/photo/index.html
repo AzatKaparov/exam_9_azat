@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+    {% for photo in photos %}
+        <div class="box">
+            {% if photo.img %}
+                <img class="photo" src="{{ photo.img.url }}" width="250" height="250" alt="picture">
+            {% endif %}
+            <h3><a href="">{{ photo.author }}</a></h3>
+            <p>Подпись: {{ photo.sign }}</p>
+            <p>Дата: {{ photo.date }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
